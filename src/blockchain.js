@@ -65,16 +65,19 @@ class Blockchain {
         let self = this;
         return new Promise(async (resolve, reject) => {
             try {
+
+                let errors = await self.validateChain();
+                if (errors.length > 0) {
+                    reject(blockObj);
+                }
+
                 let blockObj = block;
                 let height = await self.getChainHeight();                
                 blockObj.time = new Date().getTime().toString().slice(0, -3);                
                 blockObj.height = height + 1;
                 if (height >= 0){                    
                     blockObj.previousBlockHash = self.chain[self.height].hash; 
-                    console.log("OI");                    
-                }else{
-                    console.log("OLA" + height);                   
-                }
+                }                
                 blockObj.hash = SHA256(JSON.stringify(blockObj)).toString();
 
                 self.chain.push(blockObj);

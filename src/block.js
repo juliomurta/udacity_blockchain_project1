@@ -45,11 +45,11 @@ class Block {
             // Recalculate the hash of the Block
             let newHash = SHA256(JSON.stringify(self)).toString();  
             self.hash = currenthHash;
-
+            
             // Comparing if the hashes changed
             // Returning the Block is not valid            
             // Returning the Block is valid
-            resolve(currenthHash !== newHash);
+            resolve(currenthHash === newHash);
         });
     }
 
