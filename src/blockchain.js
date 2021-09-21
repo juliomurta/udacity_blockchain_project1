@@ -70,11 +70,15 @@ class Blockchain {
                 blockObj.time = new Date().getTime().toString().slice(0, -3);                
                 blockObj.height = height + 1;
                 if (height >= 0){                    
-                    blockObj.previousBlockHash = self.chain[self.height].hash;                     
-                }  
-                self.chain.push(blockObj);
+                    blockObj.previousBlockHash = self.chain[self.height].hash; 
+                    console.log("OI");                    
+                }else{
+                    console.log("OLA" + height);                   
+                }
                 blockObj.hash = SHA256(JSON.stringify(blockObj)).toString();
-                self.length = height - 1;
+
+                self.chain.push(blockObj);
+                self.height = self.chain.length - 1;
                 resolve(blockObj);
             } catch (error) {
                 reject(error);
@@ -214,7 +218,7 @@ class Blockchain {
                         errorLog.errorLog(`block: ${ block.hash } - previous hash doesnt match`);
                     }
                 }
-                
+
                 index++;
             });    
             
@@ -222,7 +226,7 @@ class Blockchain {
                 index = 0;
                 results.forEach(isValid => {
                     if (!isValid) {
-                        errorLog.push(`block: ${ block.hash } - isnt tampered`);
+                        errorLog.push(`block: ${ self.chain[index].hash } - isnt tampered`);
                     }
                     index++;
                 });
